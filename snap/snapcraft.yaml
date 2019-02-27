@@ -1,0 +1,42 @@
+# Description: 
+#   Snap package for the bosh CLI. The command line tool used for interacting with 
+#  all things BOSH. 
+#
+# Bosh Homepage: https://bosh.io/
+# Bosh CLI Homepage: https://bosh.io/docs/cli-v2/
+# Documentation: bosh.io/docs/cli-v2
+# Slack: #bosh on https://slack.cloudfoundry.org
+# Mailing list: cf-bosh (https://lists.cloudfoundry.org/pipermail/cf-bosh)
+# CI: https://main.bosh-ci.cf-app.com/teams/main/pipelines/bosh:cli
+# Roadmap: Pivotal tracker (https://www.pivotaltracker.com/n/projects/956238)
+#
+# Snap author: Ioannis Polyzos 
+
+name: bosh-cli
+version: 'v2.0.42'
+summary: bosh-cli Snap package 
+description: |
+   The BOSH Command Line Interface (CLI) is what you use 
+   to run BOSH commands. For more please visit https://bosh.io/
+
+grade: stable
+confinement: strict 
+
+parts:
+  bosh-cli:
+    source-type: git
+    source: https://github.com/cloudfoundry/bosh-cli
+    source-tag: ${SNAPCRAFT_PROJECT_VERSION}
+    plugin: go 
+    go-importpath: github.com/cloudfoundry/bosh-cli
+    override-build: |
+      export GOPATH=$(realpath ../go)
+      mkdir -p ${SNAPCRAFT_PART_INSTALL}/bin/
+      cd ${GOPATH}/src/github.com/cloudfoundry/bosh-cli
+      go build -o ${SNAPCRAFT_PART_INSTALL}/bin/bosh .
+      chmod +x ${SNAPCRAFT_PART_INSTALL}/bin/bosh
+
+apps:
+  bosh-cli:
+    command: bin/bosh
+    plugs: [home, network, network-bind]
