@@ -13,7 +13,7 @@
 # Snap author: Ioannis Polyzos 
 
 name: bosh-cli
-version: 'v5.1.2'
+version: 'v5.2.1'
 summary: bosh-cli Snap package 
 description: |
    The BOSH Command Line Interface (CLI) is what you use 
